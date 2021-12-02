@@ -23,12 +23,10 @@ def get_data():
     all_news = soup.find_all("div", class_="news-item")
 
     for new in all_news:
-        new_time = new.find("div", class_="news-item__time")
         new_content = new.find("div", class_="news-item__content")
 
         title = new_content.find_all("a")[0].text
         href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
-        time = new_time.text
 
         slug = href.split("/")[-1].split(".")[0].split("-")[1]
 

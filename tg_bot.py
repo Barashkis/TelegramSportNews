@@ -77,5 +77,10 @@ async def get_fresh_news(message: types.Message):
         await message.answer("Пока нет свежих новостей...")
 
 
+@dp.message_handler(content_types=["text"])
+async def send_message(message: types.Message):
+    await message.answer("Чего ты тут мне пишешь? У тебя же кнопки есть!")
+
+
 if __name__ == '__main__':
     executor.start_polling(dp)
