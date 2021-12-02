@@ -30,15 +30,15 @@ async def start(message: types.Message):
 
 @dp.message_handler(Text(equals="Все новости"))
 async def get_all_news(message: types.Message):
+    await message.answer("Ожидайте, извлекаю информацию о новостях...")
+
+    get_data()
+
     with open("news.json", encoding="utf-8") as file:
         news_dict = json.load(file)
 
-        if not news_dict:
-            get_data()
-            news_dict = json.load(file)
-
     for k, v in sorted(news_dict.items()):
-        news = f"{hbold('Дата публикации: ', v['Дата публикации'])}\n" \
+        news = f"{hbold('Дата публикации:', v['Дата публикации'])}\n" \
                f"{hlink(v['Заголовок'], v['Ссылка'])}"
 
         await message.answer(news)
@@ -46,15 +46,15 @@ async def get_all_news(message: types.Message):
 
 @dp.message_handler(Text(equals="Последние 5 новостей"))
 async def get_last_five_news(message: types.Message):
+    await message.answer("Ожидайте, извлекаю информацию о новостях...")
+
+    get_data()
+
     with open("news.json", encoding="utf-8") as file:
         news_dict = json.load(file)
 
-        if not news_dict:
-            get_data()
-            news_dict = json.load(file)
-
     for k, v in sorted(news_dict.items())[-5:]:
-        news = f"{hbold('Дата публикации: ', v['Дата публикации'])}\n" \
+        news = f"{hbold('Дата публикации:', v['Дата публикации'])}\n" \
                f"{hlink(v['Заголовок'], v['Ссылка'])}"
 
         await message.answer(news)
@@ -62,11 +62,13 @@ async def get_last_five_news(message: types.Message):
 
 @dp.message_handler(Text(equals="Свежие новости"))
 async def get_fresh_news(message: types.Message):
+    await message.answer("Ожидайте, извлекаю информацию о новостях...")
+
     fresh_news = get_data()
 
     if len(fresh_news) >= 1:
         for k, v in sorted(fresh_news.items()):
-            news = f"{hbold('Дата публикации: ', v['Дата публикации'])}\n" \
+            news = f"{hbold('Дата публикации:', v['Дата публикации'])}\n" \
                    f"{hlink(v['Заголовок'], v['Ссылка'])}"
 
             await message.answer(news)

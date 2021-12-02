@@ -35,16 +35,21 @@ def get_data():
         if slug in news_dict.keys():
             continue
 
+        src_time = requests.get(href, headers=headers).text
+        soup_time = BeautifulSoup(src_time, "lxml")
+
+        full_time = soup_time.find("time", class_="article-head__date").text
+
         news_dict[slug] = {
             "Заголовок": title,
             "Ссылка": href,
-            "Дата публикации": time
+            "Дата публикации": full_time
         }
 
         fresh_news[slug] = {
             "Заголовок": title,
             "Ссылка": href,
-            "Дата публикации": time
+            "Дата публикации": full_time
         }
 
     with open("news.json", "w", encoding="utf-8") as file:
