@@ -19,45 +19,13 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands="start")
 async def start(message: types.Message):
-    start_buttons = ["Все новости", "Последние 5 новостей", "Свежие новости"]
+    start_buttons = ["Свежие новости"]
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*start_buttons)
 
     await message.answer("Добро пожаловать, дорогой болельщик Зенита! Здесь ты можешь оперативно следить"
                          " за новостями футбольного клуба Зенит. Пользуйся мной с удовольствием!",
                          reply_markup=keyboard)
-
-
-@dp.message_handler(Text(equals="Все новости"))
-async def get_all_news(message: types.Message):
-    await message.answer("Ожидайте, извлекаю информацию о новостях...")
-
-    get_data()
-
-    with open("news.json", encoding="utf-8") as file:
-        news_dict = json.load(file)
-
-    for k, v in sorted(news_dict.items()):
-        news = f"{hbold('Дата публикации:', v['Дата публикации'])}\n" \
-               f"{hlink(v['Заголовок'], v['Ссылка'])}"
-
-        await message.answer(news)
-
-
-@dp.message_handler(Text(equals="Последние 5 новостей"))
-async def get_last_five_news(message: types.Message):
-    await message.answer("Ожидайте, извлекаю информацию о новостях...")
-
-    get_data()
-
-    with open("news.json", encoding="utf-8") as file:
-        news_dict = json.load(file)
-
-    for k, v in sorted(news_dict.items())[-5:]:
-        news = f"{hbold('Дата публикации:', v['Дата публикации'])}\n" \
-               f"{hlink(v['Заголовок'], v['Ссылка'])}"
-
-        await message.answer(news)
 
 
 @dp.message_handler(Text(equals="Свежие новости"))
