@@ -25,13 +25,13 @@ def get_data():
     for new in all_news:
         new_content = new.find("div", class_="news-item__content")
 
-        title = new_content.find_all("a")[0].text
         href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
-
         slug = href.split("/")[-1].split(".")[0].split("-")[1]
 
         if slug in news_dict.keys():
             continue
+
+        title = new_content.find_all("a")[0].text
 
         src_time = requests.get(href, headers=headers).text
         soup_time = BeautifulSoup(src_time, "lxml")

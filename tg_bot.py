@@ -1,5 +1,3 @@
-import json
-
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.utils.markdown import hbold, hlink
 from aiogram.dispatcher.filters import Text
