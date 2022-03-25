@@ -22,7 +22,7 @@ def get_data():
     soup = BeautifulSoup(src, "lxml")
     all_news = soup.find_all("div", class_="news-item")
 
-    for new in all_news:
+    for new in all_news[:10]:
         new_content = new.find("div", class_="news-item__content")
 
         href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
@@ -49,6 +49,9 @@ def get_data():
             "Ссылка": href,
             "Дата публикации": full_time
         }
+
+        if len(news_dict) == 11:
+            del news_dict[min(news_dict.keys())]
 
     with open("news.json", "w", encoding="utf-8") as file:
         json.dump(news_dict, file, indent=4, ensure_ascii=False)
