@@ -5,9 +5,10 @@ services:
     container_name: zenit_news_bot
     build:
       context: .
-    command:
-      - python app.py
+    command: python app.py
     restart: always
+    env_file:
+      - .env
     networks:
       - botnet
     volumes:
