@@ -8,7 +8,6 @@ This project uses Python libraries (version 3.9) such as:
 + BeautifulSoup4
 + lxml
 + requests
-+ json
 + aiogram
 + etc
 

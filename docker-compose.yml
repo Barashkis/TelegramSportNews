@@ -1,0 +1,18 @@
+version: "3.1"
+
+services:
+  tgbot:
+    container_name: zenit_news_bot
+    build:
+      context: .
+    command:
+      - python app.py
+    restart: always
+    networks:
+      - botnet
+    volumes:
+      - .:/src
+
+networks:
+  botnet:
+    driver: bridge
