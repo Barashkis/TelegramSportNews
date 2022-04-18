@@ -1,14 +1,17 @@
 from bs4 import BeautifulSoup
-import requests
+import aiohttp
+from fake_useragent import UserAgent
 
 
 async def get_fresh_data(dp):
     state = dp.current_state()
+
+    useragent = UserAgent()
     headers = {
         "Accept": "*/*",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) \
-               Chrome/95.0.4638.69 Safari/537.36"
+        "User-Agent": useragent.random
     }
+
     fresh_news = {}
 
     data = await state.get_data()
@@ -17,37 +20,39 @@ async def get_fresh_data(dp):
 
     url = "https://www.championat.com/tags/5-fk-zenit/news/"
 
-    req = requests.get(url, headers=headers)
-    src = req.text
+    async with aiohttp.ClientSession() as session:
+        req = await session.get(url, headers=headers)
+        src = await req.text()
 
-    soup = BeautifulSoup(src, "lxml")
-    all_news = soup.find_all("div", class_="news-item")
+        soup = BeautifulSoup(src, "lxml")
+        all_news = soup.find_all("div", class_="news-item")
 
-    for new in all_news[:news_count]:
-        new_content = new.find("div", class_="news-item__content")
+        for new in all_news[:news_count]:
+            new_content = new.find("div", class_="news-item__content")
 
-        href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
-        slug = href.split("/")[-1].split(".")[0].split("-")[1]
+            href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
+            slug = href.split("/")[-1].split(".")[0].split("-")[1]
 
-        title = new_content.find_all("a")[0].text
+            title = new_content.find_all("a")[0].text
 
-        if slug in all_news_dict.keys():
-            continue
+            if slug in all_news_dict.keys():
+                continue
 
-        fresh_news[slug] = {
-            "Заголовок": title,
-            "Ссылка": href
-        }
+            fresh_news[slug] = {
+                "Заголовок": title,
+                "Ссылка": href
+            }
 
     return fresh_news
 
 
 async def get_data(dp):
     state = dp.current_state()
+
+    useragent = UserAgent()
     headers = {
         "Accept": "*/*",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) \
-                   Chrome/95.0.4638.69 Safari/537.36"
+        "User-Agent": useragent.random
     }
 
     all_news_dict = {}
@@ -57,25 +62,26 @@ async def get_data(dp):
 
     url = "https://www.championat.com/tags/5-fk-zenit/news/"
 
-    req = requests.get(url, headers=headers)
-    src = req.text
+    async with aiohttp.ClientSession() as session:
+        req = await session.get(url, headers=headers)
+        src = await req.text()
 
-    soup = BeautifulSoup(src, "lxml")
-    all_news = soup.find_all("div", class_="news-item")
+        soup = BeautifulSoup(src, "lxml")
+        all_news = soup.find_all("div", class_="news-item")
 
-    for new in all_news[:news_count]:
-        new_content = new.find("div", class_="news-item__content")
+        for new in all_news[:news_count]:
+            new_content = new.find("div", class_="news-item__content")
 
-        href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
-        slug = href.split("/")[-1].split(".")[0].split("-")[1]
+            href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
+            slug = href.split("/")[-1].split(".")[0].split("-")[1]
 
-        title = new_content.find_all("a")[0].text
+            title = new_content.find_all("a")[0].text
 
-        all_news_dict[slug] = {
-            "Заголовок": title,
-            "Ссылка": href
-        }
+            all_news_dict[slug] = {
+                "Заголовок": title,
+                "Ссылка": href
+            }
 
-    await state.update_data({
-        "news_data": all_news_dict
-    })
+        await state.update_data({
+            "news_data": all_news_dict
+        })
