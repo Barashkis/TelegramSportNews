@@ -153,6 +153,8 @@ async def disable_auto_mode(message: types.Message, state: FSMContext):
 
 @dp.message_handler(LastNews())
 async def last_news(message: types.Message, state: FSMContext):
+    await get_data(dp)
+
     data = await state.get_data()
     all_news = data["news_data"]
 
@@ -170,5 +172,5 @@ async def catch_errors(update: Update, exception):
 
 @dp.message_handler(content_types=ContentType.ANY)
 async def send_message(message: types.Message):
-    await message.reply("К сожалению, у меня нет ответа на это сообщение... "
-                        "Чтобы взаимодействовать со мной, используйте кнопки и команды. ")
+    await message.answer("К сожалению, у меня нет ответа на это сообщение... "
+                         "Чтобы взаимодействовать со мной, используйте кнопки и команды. ")

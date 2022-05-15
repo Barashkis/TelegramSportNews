@@ -35,13 +35,11 @@ async def get_fresh_data(dp):
 
             title = new_content.find_all("a")[0].text
 
-            if slug in all_news_dict.keys():
-                continue
-
-            fresh_news[slug] = {
-                "Заголовок": title,
-                "Ссылка": href
-            }
+            if slug not in all_news_dict.keys():
+                fresh_news[slug] = {
+                    "Заголовок": title,
+                    "Ссылка": href
+                }
 
     return fresh_news
 
