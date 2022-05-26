@@ -30,8 +30,13 @@ async def get_fresh_data(dp):
         for new in all_news[:news_count]:
             new_content = new.find("div", class_="news-item__content")
 
-            href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
-            slug = href.split("/")[-1].split(".")[0].split("-")[1]
+            href = new_content.find_all("a")[0].get("href")
+
+            if "news" in href:
+                href = "https://www.championat.com" + href
+                slug = href.split("/")[-1].split(".")[0].split("-")[1]
+            else:
+                slug = href.split("/")[-1]
 
             title = new_content.find_all("a")[0].text
 
@@ -70,8 +75,13 @@ async def get_data(dp):
         for new in all_news[:news_count]:
             new_content = new.find("div", class_="news-item__content")
 
-            href = "https://www.championat.com" + new_content.find_all("a")[0].get("href")
-            slug = href.split("/")[-1].split(".")[0].split("-")[1]
+            href = new_content.find_all("a")[0].get("href")
+
+            if "news" in href:
+                href = "https://www.championat.com" + href
+                slug = href.split("/")[-1].split(".")[0].split("-")[1]
+            else:
+                slug = href.split("/")[-1]
 
             title = new_content.find_all("a")[0].text
 
