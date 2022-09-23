@@ -12,4 +12,4 @@ This project uses Python libraries (version 3.9) such as:
 + etc
 
 # Bot setup
-You can find my bot in Telegram: https://t.me/ZenitNewsBot or @ZenitNewsBot
+You can find my bot in Telegram: https://t.me/ZenitNewsBot or @ZenitNewsBot (now bot isn't available)
