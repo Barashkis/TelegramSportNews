@@ -2,8 +2,10 @@ from bs4 import BeautifulSoup
 import aiohttp
 from fake_useragent import UserAgent
 
+from aiogram import Dispatcher
 
-async def get_fresh_data(dp):
+
+async def get_fresh_data(dp: Dispatcher) -> dict:
     state = dp.current_state()
 
     useragent = UserAgent()
@@ -49,7 +51,7 @@ async def get_fresh_data(dp):
     return fresh_news
 
 
-async def get_data(dp):
+async def get_data(dp: Dispatcher):
     state = dp.current_state()
 
     useragent = UserAgent()
